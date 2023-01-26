@@ -14,8 +14,8 @@ const config = {
 			'$msw/*': './src/msw/*',
 			'$firebase/*': './src/firebase/*',
 			$firebase: './src/firebase',
-			'$lib/*': './src/lib/*',
-			$lib: './src/lib/'
+			'@lib/*': 'src/lib/*',
+			'@lib': 'src/lib'
 		}
 	}
 };
