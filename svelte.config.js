@@ -12,10 +12,10 @@ const config = {
 		alias: {
 			$msw: './src/msw',
 			'$msw/*': './src/msw/*',
-			'#firebase/*': './src/firebase/*',
-			'#firebase': './src/firebase',
-			'lib/*': './src/lib/*',
-			lib: './src/lib/'
+			'$firebase/*': './src/firebase/*',
+			$firebase: './src/firebase',
+			'$lib/*': './src/lib/*',
+			$lib: './src/lib/'
 		}
 	}
 };
