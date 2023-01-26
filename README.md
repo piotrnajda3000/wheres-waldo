@@ -1,3 +1,3 @@
 # create-svelte
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+MSW setup with the help of [this post](https://flaming.codes/posts/msw-in-sveltekit-for-local-development)
