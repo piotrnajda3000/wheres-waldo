@@ -1,6 +1,8 @@
 <script>
 	import { dev } from '$app/environment';
 
+	import '../app.css';
+
 	// Loaded from .env.local, guide covers this
 	// step in a moment.
 	const isMswEnabled = dev && import.meta.env.VITE_MSW_ENABLED === 'true';
