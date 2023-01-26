@@ -35,5 +35,8 @@
 	"type": "module",
 	"msw": {
 		"workerDirectory": "static"
+	},
+	"dependencies": {
+		"firebase": "^9.16.0"
 	}
 }
