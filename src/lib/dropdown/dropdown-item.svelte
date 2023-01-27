@@ -1,9 +1,36 @@
 <script lang="ts">
+	import { calcItemRect, items } from '@lib/items';
+
 	export let name: string;
 	export let src: string;
+
+	let scrollX: number;
+	let scrollY: number;
+
+	const overlap = (item) => {
+		const targetingBox = document
+			.querySelector('[data-js="targetingBox"]')!
+			.getBoundingClientRect();
+
+		const itemRect = calcItemRect(item);
+
+		return !(
+			targetingBox.top + scrollY > itemRect.bottom ||
+			targetingBox.right + scrollX < itemRect.left ||
+			targetingBox.bottom + scrollY < itemRect.top ||
+			targetingBox.left + scrollX > itemRect.right
+		);
+	};
+
+	const validateSelection = () => {
+		const itemBox = items.find((item) => item.name === name)!;
+		return overlap(itemBox);
+	};
 </script>
 
-<div class="item" draggable="false">
+<svelte:window bind:scrollX bind:scrollY />
+
+<div class="item" draggable="false" on:mouseup={validateSelection}>
 	<img {src} alt={name} draggable="false" />
 	<p>{name}</p>
 </div>

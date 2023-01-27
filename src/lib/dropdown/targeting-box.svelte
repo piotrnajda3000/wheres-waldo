@@ -13,6 +13,7 @@
 	style:width={appendPx(size)}
 	style:height={appendPx(size)}
 	style:border={`${appendPx(borderSize)} solid white`}
+	data-js="targetingBox"
 />
 
 <style>

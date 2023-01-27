@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DropdownItem from './dropdown-item.svelte';
-	import { items } from './dropdown-items';
+	import { items } from '../items';
 	import TargetingBox from './targeting-box.svelte';
 
 	const targetingBoxSize = 57;
@@ -67,6 +67,7 @@
 
 <style>
 	.Dropdown {
+		z-index: 2;
 		position: absolute;
 		display: none;
 		user-select: none;
