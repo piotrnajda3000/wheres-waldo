@@ -1,25 +1,24 @@
 <script lang="ts">
 	import { items } from '@lib/items/items.conversations';
 	import { getItemBounds } from '@lib/items/items.utils';
+	import type { DropdownNodes } from './dropdown.store';
 
 	export let name: string;
 	export let src: string;
 	export let imageWrapper: HTMLDivElement;
+	export let nodes: Required<DropdownNodes>;
 
 	const getTargetingBoxBounds = () => {
-		const dropdownNode = document.querySelector('.Dropdown')! as HTMLElement;
-		const targetingBoxNode = document.querySelector('.TargetingBox')! as HTMLElement;
-
-		const { offsetLeft, offsetTop } = dropdownNode;
-		const { offsetLeft: offsetLeftTargeting, offsetTop: offsetTopTargeting } = targetingBoxNode;
+		const { offsetLeft, offsetTop } = nodes.dropdown;
+		const { offsetLeft: offsetLeftTargeting, offsetTop: offsetTopTargeting } = nodes.targetingBox;
 
 		const topPx = offsetTop + offsetTopTargeting;
 		const leftPx = offsetLeft + offsetLeftTargeting;
 
 		return {
 			top: topPx,
-			right: leftPx + targetingBoxNode.offsetWidth,
-			bottom: topPx + targetingBoxNode.offsetHeight,
+			right: leftPx + nodes.targetingBox.offsetWidth,
+			bottom: topPx + nodes.targetingBox.offsetHeight,
 			left: leftPx
 		};
 	};
@@ -29,8 +28,6 @@
 
 		const targetingBoxRect = getTargetingBoxBounds();
 		const itemRect = getItemBounds(item, imageWrapper);
-
-		console.log(targetingBoxRect, itemRect);
 
 		return !(
 			targetingBoxRect.top > itemRect.bottom ||
@@ -58,6 +55,7 @@
 	.item {
 		padding: 4px;
 		width: 90px;
+		height: 58px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

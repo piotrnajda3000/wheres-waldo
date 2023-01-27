@@ -2,6 +2,7 @@
 	import Dropdown from '@lib/dropdown/dropdown.svelte';
 	import Logo from '@lib/logo/logo.svelte';
 	import { onMount } from 'svelte';
+	import { nodes } from '@lib/dropdown/dropdown.store';
 
 	let imageWrapper: HTMLDivElement;
 	let isDropdown = false;
