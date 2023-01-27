@@ -69,6 +69,7 @@
 	.Dropdown {
 		position: absolute;
 		display: none;
+		user-select: none;
 	}
 	.isVisible {
 		display: block;
