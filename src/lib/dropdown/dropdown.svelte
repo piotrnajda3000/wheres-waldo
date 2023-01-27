@@ -55,8 +55,8 @@
 	use:selectAbility
 	class="Dropdown"
 	class:isVisible
-	style:left={`${mouse.x + offset.x}px`}
-	style:top={`${mouse.y + offset.y}px`}
+	style:left={isVisible ? `${mouse.x + offset.x}px` : null}
+	style:top={isVisible ? `${mouse.y + offset.y}px` : null}
 	draggable="false"
 >
 	<TargetingBox size={targetingBoxSize} />
