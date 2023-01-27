@@ -7,17 +7,16 @@
 </script>
 
 <div
-	class="targetingBox"
+	class="TargetingBox"
 	draggable="false"
 	style:left={appendPx(-size)}
 	style:width={appendPx(size)}
 	style:height={appendPx(size)}
 	style:border={`${appendPx(borderSize)} solid white`}
-	data-js="targetingBox"
 />
 
 <style>
-	.targetingBox {
+	.TargetingBox {
 		position: absolute;
 	}
 </style>

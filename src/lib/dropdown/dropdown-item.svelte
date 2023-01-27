@@ -1,34 +1,49 @@
 <script lang="ts">
-	import { calcItemRect, items } from '@lib/items';
+	import { items } from '@lib/items/items.conversations';
+	import { getItemBounds } from '@lib/items/items.utils';
 
 	export let name: string;
 	export let src: string;
+	export let imageWrapper: HTMLDivElement;
 
-	let scrollX: number;
-	let scrollY: number;
+	const getTargetingBoxBounds = () => {
+		const dropdownNode = document.querySelector('.Dropdown')! as HTMLElement;
+		const targetingBoxNode = document.querySelector('.TargetingBox')! as HTMLElement;
 
-	const overlap = (item) => {
-		const targetingBox = document
-			.querySelector('[data-js="targetingBox"]')!
-			.getBoundingClientRect();
+		const { offsetLeft, offsetTop } = dropdownNode;
+		const { offsetLeft: offsetLeftTargeting, offsetTop: offsetTopTargeting } = targetingBoxNode;
 
-		const itemRect = calcItemRect(item);
+		const topPx = offsetTop + offsetTopTargeting;
+		const leftPx = offsetLeft + offsetLeftTargeting;
+
+		return {
+			top: topPx,
+			right: leftPx + targetingBoxNode.offsetWidth,
+			bottom: topPx + targetingBoxNode.offsetHeight,
+			left: leftPx
+		};
+	};
+
+	const overlap = () => {
+		const item = $items.find((item) => item.name === name)!;
+
+		const targetingBoxRect = getTargetingBoxBounds();
+		const itemRect = getItemBounds(item, imageWrapper);
+
+		console.log(targetingBoxRect, itemRect);
 
 		return !(
-			targetingBox.top + scrollY > itemRect.bottom ||
-			targetingBox.right + scrollX < itemRect.left ||
-			targetingBox.bottom + scrollY < itemRect.top ||
-			targetingBox.left + scrollX > itemRect.right
+			targetingBoxRect.top > itemRect.bottom ||
+			targetingBoxRect.right < itemRect.left ||
+			targetingBoxRect.bottom < itemRect.top ||
+			targetingBoxRect.left > itemRect.right
 		);
 	};
 
 	const validateSelection = () => {
-		const itemBox = items.find((item) => item.name === name)!;
-		return overlap(itemBox);
+		console.log(overlap());
 	};
 </script>
-
-<svelte:window bind:scrollX bind:scrollY />
 
 <div class="item" draggable="false" on:mouseup={validateSelection}>
 	<img {src} alt={name} draggable="false" />
