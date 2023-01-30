@@ -1,2 +1,12 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+	import Container from '@lib/container/container.svelte';
+	import LevelImage from '@lib/level/image/level-image.svelte';
+	import Logo from '@lib/logo/logo.svelte';
+
+	let level = 1;
+</script>
+
+<Container>
+	<Logo />
+	<LevelImage {level} />
+</Container>
