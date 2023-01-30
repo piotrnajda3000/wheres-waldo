@@ -8,7 +8,15 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: adapter()
+		adapter: adapter(),
+		alias: {
+			$msw: './src/msw',
+			'$msw/*': './src/msw/*',
+			'#firebase/*': './src/firebase/*',
+			'#firebase': './src/firebase',
+			'@lib/*': 'src/lib/*',
+			'@lib': 'src/lib'
+		}
 	}
 };
 
