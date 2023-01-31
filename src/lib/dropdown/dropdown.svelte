@@ -65,7 +65,7 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		use:containerClick={container}
-		use:followMouseCursor={container}
+		use:followMouseCursor={{ container, destroyOn: !visible }}
 		on:mousemove_container={(e) => {
 			if (mouseTrack) {
 				[x, y] = calcCoordinates(e, container);
