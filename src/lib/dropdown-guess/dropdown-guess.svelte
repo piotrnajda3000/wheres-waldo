@@ -33,11 +33,10 @@
 	.DropdownGuess {
 		position: absolute;
 		user-select: none;
-		left: calc(var(--x) - var(--targeting-box-size) / 2);
+		left: calc(var(--x) + var(--targeting-box-size) / 2);
 		top: calc(var(--y) - var(--targeting-box-size) / 2);
 	}
 	.Guesses {
 		position: absolute;
-		left: var(--targeting-box-size);
 	}
 </style>

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { addPx } from '@lib/helpers/append-px';
+
 	export let size: number;
 </script>
 
@@ -7,6 +9,7 @@
 	class="TargetingBox"
 	style:height={`${size}px`}
 	style:width={`${size}px`}
+	style:left={addPx(-size)}
 />
 
 <style>
