@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { addPx } from '@lib/helpers/append-px';
+	import { addPx } from '@lib/helpers/add-px';
 	import type { Guess } from '@lib/level/level.conversations';
 	import GuessItem from './components/guess-item.svelte';
 	import TargetingBox from './components/targeting-box.svelte';

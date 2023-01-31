@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { addPx } from '@lib/helpers/append-px';
+	import { addPx } from '@lib/helpers/add-px';
 
 	export let size: number;
 </script>
