@@ -1,12 +1,19 @@
 <script>
-	import Container from '@lib/container/container.svelte';
 	import LevelImage from '@lib/level/image/level-image.svelte';
 	import Logo from '@lib/logo/logo.svelte';
 
 	let level = 1;
 </script>
 
-<Container>
+<div class="container">
 	<Logo />
 	<LevelImage {level} />
-</Container>
+</div>
+
+<style>
+	.container {
+		padding: 2rem;
+		max-width: 670px;
+		margin-inline: auto;
+	}
+</style>
