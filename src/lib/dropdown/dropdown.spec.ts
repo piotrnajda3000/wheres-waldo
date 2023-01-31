@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/svelte';
 import DropdownGuess from './dropdown.svelte';
 import type { Guess } from '@lib/level/level.conversations';
 
-const mockGuesses: Guess[] = [{ name: 'test', src: 'test' }];
+const mockGuesses: Guess[] = [{ name: 'test', src: 'test', x: 0, y: 0, width: 1, height: 1 }];
 
 describe('DropdownGuess', () => {
 	describe('Not visible', () => {
@@ -24,9 +24,13 @@ describe('DropdownGuess', () => {
 				expect(screen.getByText(guess.name)).toBeInTheDocument();
 			});
 		});
-		it.skip('On click, user cursor is in the middle of the targeting box'); // Implemented
-		it.skip("Follows user's cursor"); // Implemented
-		it.skip("Targeting box does not move out of bounds of it's container"); // Implemented
-		it.skip('Allows user to select a guess by holding down the mouse button'); // Implemented
+		describe('Positioning', () => {
+			it.skip('On click, user cursor is in the middle of the targeting box'); // Implemented
+			it.skip("Follows user's cursor"); // Implemented
+			it.skip("Targeting box does not move out of bounds of it's container"); // Implemented
+		});
+		describe('Guessing', () => {
+			it.skip('Allows user to select a guess by holding down the mouse button'); // Implemented
+		});
 	});
 });

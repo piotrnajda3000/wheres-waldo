@@ -5,6 +5,10 @@ import { db } from '#firebase/firebase';
 export interface Guess {
 	name: string;
 	src: string;
+	width: number;
+	height: number;
+	x: number;
+	y: number;
 }
 
 export const guesses = writable<Guess[]>([], (set) => {

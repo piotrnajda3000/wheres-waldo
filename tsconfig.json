@@ -19,7 +19,8 @@
 			"$lib/*": ["./src/lib/*"],
 			"#firebase": ["./src/firebase"],
 			"#firebase/*": ["./src/firebase/*"]
-		}
+		},
+		"include": ["./src/**/*"]
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

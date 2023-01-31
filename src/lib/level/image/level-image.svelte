@@ -3,6 +3,7 @@
 	import { clickOutside } from '@lib/actions/click-outside';
 	import { levelImages } from '../level.conversations';
 	import { guesses } from '../level.conversations';
+	import GuessHitboxes from '@lib/debug/guess-hitboxes.svelte';
 
 	export let level: number = 1;
 
@@ -21,6 +22,7 @@
 	class="LevelImage"
 	bind:this={container}
 >
+	<GuessHitboxes />
 	<DropdownGuess {container} guesses={$guesses} bind:visible={isDropdownVisible} />
 	<img src={levelImage} alt={`Level ${level}`} />
 </div>

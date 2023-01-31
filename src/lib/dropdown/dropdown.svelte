@@ -3,7 +3,10 @@
 	import type { Guess } from '@lib/level/level.conversations';
 	import GuessItem from './components/guess-item.svelte';
 	import TargetingBox from './components/targeting-box.svelte';
-	import { afterUpdate, tick } from 'svelte';
+	import { afterUpdate } from 'svelte';
+	import { followMouseCursor } from '@lib/actions/follow-mouse-cursor';
+	import { containerClick } from '@lib/actions/container-click';
+	import { calcCoordinates } from './helpers';
 
 	export let container: HTMLElement;
 	export let guesses: Guess[];
@@ -11,48 +14,11 @@
 
 	let x: number;
 	let y: number;
-	let targetingBoxSize: number = 58;
-	let guessItemWidth: number = 90;
+	let targetingBoxSize = 58;
+	let guessItemWidth = 90;
 	let ref: HTMLDivElement;
 	let guessSide: 'left' | 'right';
 	let mouseTrack = true;
-
-	const containerClick = (node: HTMLDivElement) => {
-		const handleContainerClick = (e: MouseEvent) => {
-			visible = !visible;
-			x = e.clientX + window.scrollX - container.offsetLeft;
-			y = e.clientY + window.scrollY - container.offsetTop;
-		};
-		container.addEventListener('click', handleContainerClick);
-		return {
-			destroy() {
-				container.removeEventListener('click', handleContainerClick);
-			}
-		};
-	};
-
-	const isOutOfBounds = () => {
-		return (
-			container &&
-			ref &&
-			container.getBoundingClientRect().right - guessItemWidth < ref.getBoundingClientRect().right
-		);
-	};
-
-	const followMouseCursor = (node: HTMLDivElement) => {
-		const handleMouseMove = (e: MouseEvent) => {
-			if (mouseTrack) {
-				x = e.clientX + window.scrollX - container.offsetLeft;
-				y = e.clientY + window.scrollY - container.offsetTop;
-			}
-		};
-		container.addEventListener('mousemove', handleMouseMove);
-		return {
-			destroy() {
-				container.removeEventListener('mousemove', handleMouseMove);
-			}
-		};
-	};
 
 	const abilityToSelect = (node: HTMLDivElement) => {
 		let timerOpen: any;
@@ -84,6 +50,13 @@
 	};
 
 	afterUpdate(() => {
+		const isOutOfBounds = () => {
+			return (
+				container &&
+				ref &&
+				container.getBoundingClientRect().right - guessItemWidth < ref.getBoundingClientRect().right
+			);
+		};
 		guessSide = isOutOfBounds() ? 'left' : 'right';
 	});
 </script>
@@ -91,8 +64,17 @@
 {#if guesses.length}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
-		use:containerClick
-		use:followMouseCursor
+		use:containerClick={container}
+		use:followMouseCursor={container}
+		on:mousemove_container={(e) => {
+			if (mouseTrack) {
+				[x, y] = calcCoordinates(e, container);
+			}
+		}}
+		on:click_container={(e) => {
+			visible = !visible;
+			[x, y] = calcCoordinates(e, container);
+		}}
 		use:abilityToSelect
 		class="DropdownGuess"
 		data-testid="dropdown"
