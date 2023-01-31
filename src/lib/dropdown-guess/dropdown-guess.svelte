@@ -5,17 +5,13 @@
 	export let guesses: Guess[];
 	export let visible: boolean;
 
-	const styles = {
-		targetingBox: {
-			size: 45
-		}
-	};
+	const targetingBoxSize = 58;
 </script>
 
 {#if visible && guesses.length}
 	<div class="DropdownGuess" data-testid="dropdown-guess">
-		<TargetingBox {...styles.targetingBox} />
-		<div data-testid="guesses" class="Guesses">
+		<TargetingBox size={targetingBoxSize} />
+		<div data-testid="guesses" class="Guesses" style:--targeting-box-size={`${targetingBoxSize}px`}>
 			{#each guesses as guess}
 				<GuessItem {guess} />
 			{/each}
@@ -30,5 +26,6 @@
 	}
 	.Guesses {
 		position: absolute;
+		left: var(--targeting-box-size);
 	}
 </style>
