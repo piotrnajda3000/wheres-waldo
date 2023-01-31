@@ -1,5 +1,5 @@
 <script lang="ts">
-	import DropdownGuess from '@lib/dropdown-guess/dropdown-guess.svelte';
+	import DropdownGuess from '@lib/dropdown/dropdown.svelte';
 	import { clickOutside } from '@lib/actions/click-outside';
 	import { levelImages } from '../level.conversations';
 	import { guesses } from '../level.conversations';

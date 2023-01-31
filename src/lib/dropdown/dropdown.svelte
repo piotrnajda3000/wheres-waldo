@@ -95,7 +95,7 @@
 		use:followMouseCursor
 		use:abilityToSelect
 		class="DropdownGuess"
-		data-testid="dropdown-guess"
+		data-testid="dropdown"
 		class:visible
 		style:--x={addPx(x)}
 		style:--y={addPx(y)}

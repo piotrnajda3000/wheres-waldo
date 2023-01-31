@@ -10,9 +10,9 @@ describe('LevelImage', () => {
 	it('Given guesses, on click, toggles guess dropdown', async () => {
 		render(LevelImage);
 		const levelImage = screen.getByTestId('level-image');
-		expect(screen.queryByTestId('dropdown-guess')).not.toBeInTheDocument();
+		expect(screen.queryByTestId('dropdown')).not.toBeInTheDocument();
 		await userEvent.click(levelImage);
-		expect(await screen.findByTestId('dropdown-guess')).toBeVisible();
+		expect(await screen.findByTestId('dropdown')).toBeVisible();
 	});
 	// Future: Implement more levels support.
 });
