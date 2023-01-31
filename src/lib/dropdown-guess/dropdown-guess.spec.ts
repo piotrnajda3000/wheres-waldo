@@ -27,5 +27,6 @@ describe('DropdownGuess', () => {
 		it.skip('On click, user cursor is in the middle of the targeting box'); // Implemented
 		it.skip("Follows user's cursor"); // Implemented
 		it.skip("Targeting box does not move out of bounds of it's container"); // Implemented
+		it.skip('Allows user to select a guess by holding down the mouse button'); // Implemented
 	});
 });

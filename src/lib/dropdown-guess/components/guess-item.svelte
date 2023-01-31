@@ -33,8 +33,8 @@
 	}
 
 	.GuessItem img {
-		width: 32px;
-		height: 32px;
+		width: 26px;
+		height: 26px;
 		object-fit: contain;
 	}
 	.GuessItem p {

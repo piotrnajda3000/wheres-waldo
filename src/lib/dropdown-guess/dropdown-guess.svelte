@@ -3,7 +3,7 @@
 	import type { Guess } from '@lib/level/level.conversations';
 	import GuessItem from './components/guess-item.svelte';
 	import TargetingBox from './components/targeting-box.svelte';
-	import { afterUpdate } from 'svelte';
+	import { afterUpdate, tick } from 'svelte';
 
 	export let container: HTMLElement;
 	export let guesses: Guess[];
@@ -11,11 +11,11 @@
 
 	let x: number;
 	let y: number;
-
 	let targetingBoxSize: number = 58;
 	let guessItemWidth: number = 90;
 	let ref: HTMLDivElement;
 	let guessSide: 'left' | 'right';
+	let mouseTrack = true;
 
 	const containerClick = (node: HTMLDivElement) => {
 		const handleContainerClick = (e: MouseEvent) => {
@@ -39,14 +39,12 @@
 		);
 	};
 
-	afterUpdate(() => {
-		guessSide = isOutOfBounds() ? 'left' : 'right';
-	});
-
 	const followMouseCursor = (node: HTMLDivElement) => {
 		const handleMouseMove = (e: MouseEvent) => {
-			x = e.clientX + window.scrollX - container.offsetLeft;
-			y = e.clientY + window.scrollY - container.offsetTop;
+			if (mouseTrack) {
+				x = e.clientX + window.scrollX - container.offsetLeft;
+				y = e.clientY + window.scrollY - container.offsetTop;
+			}
 		};
 		container.addEventListener('mousemove', handleMouseMove);
 		return {
@@ -55,6 +53,39 @@
 			}
 		};
 	};
+
+	const abilityToSelect = (node: HTMLDivElement) => {
+		let timerOpen: any;
+
+		const handleMouseDown = async () => {
+			timerOpen = setTimeout(() => {
+				if (!visible) {
+					visible = true;
+				}
+			}, 200);
+
+			mouseTrack = false;
+		};
+
+		const handleMouseUp = () => {
+			mouseTrack = true;
+			clearTimeout(timerOpen);
+		};
+
+		container.addEventListener('mousedown', handleMouseDown);
+		container.addEventListener('mouseup', handleMouseUp);
+
+		return {
+			destroy() {
+				container.removeEventListener('mousedown', handleMouseDown);
+				container.removeEventListener('mouseup', handleMouseUp);
+			}
+		};
+	};
+
+	afterUpdate(() => {
+		guessSide = isOutOfBounds() ? 'left' : 'right';
+	});
 </script>
 
 {#if guesses.length}
@@ -62,6 +93,7 @@
 	<div
 		use:containerClick
 		use:followMouseCursor
+		use:abilityToSelect
 		class="DropdownGuess"
 		data-testid="dropdown-guess"
 		class:visible
