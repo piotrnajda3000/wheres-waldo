@@ -14,5 +14,5 @@ describe('LevelImage', () => {
 		await userEvent.click(levelImage);
 		expect(await screen.findByTestId('dropdown-guess')).toBeVisible();
 	});
-	it.skip('On click, user cursor is in the middle of the targeting box');
+	// Future: Implement more levels support.
 });

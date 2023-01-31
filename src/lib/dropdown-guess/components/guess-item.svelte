@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { addPx } from '@lib/helpers/add-px';
 	import type { Guess } from '@lib/level/level.conversations';
 
 	export let guess: Guess;
+	export let width: number;
 </script>
 
-<div class="GuessItem">
+<div class="GuessItem" style:--width={addPx(width)}>
 	<img src={`images/${guess.src}`} alt={guess.name} />
 	<p>{guess.name}</p>
 </div>
@@ -16,7 +18,7 @@
 
 	.GuessItem {
 		padding: 4px;
-		width: 90px;
+		width: var(--width);
 		height: 58px;
 		display: flex;
 		flex-direction: column;

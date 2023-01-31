@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DropdownGuess from '@lib/dropdown-guess/dropdown-guess.svelte';
-	import type { ClickEvent } from '@lib/types/types';
+	import { clickOutside } from '@lib/actions/click-outside';
 	import { levelImages } from '../level.conversations';
 	import { guesses } from '../level.conversations';
 
@@ -8,24 +8,26 @@
 
 	const levelImage = levelImages.get(level);
 
-	let dropdown = {
-		visible: false,
-		x: 0,
-		y: 0
-	};
-
-	const handleImageClick = (e: ClickEvent<HTMLDivElement>) => {
-		dropdown = {
-			visible: !dropdown.visible,
-			x: e.clientX + window.scrollX,
-			y: e.clientY + window.scrollY
-		};
-	};
+	let container: HTMLDivElement;
+	let isDropdownVisible = false;
 </script>
 
-<DropdownGuess {...dropdown} guesses={$guesses} />
-
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div data-testid="level-image" on:click={handleImageClick}>
+<div
+	data-testid="level-image"
+	use:clickOutside={() => {
+		isDropdownVisible = false;
+	}}
+	class="LevelImage"
+	bind:this={container}
+>
+	<DropdownGuess {container} guesses={$guesses} bind:visible={isDropdownVisible} />
 	<img src={levelImage} alt={`Level ${level}`} />
 </div>
+
+<style>
+	.LevelImage {
+		position: relative;
+		clip-path: inset(0);
+	}
+</style>
