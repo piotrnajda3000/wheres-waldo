@@ -1,5 +1,5 @@
 <script lang="ts">
-	import DropdownGuess from '@lib/dropdown/dropdown.svelte';
+	import Dropdown from '@lib/dropdown/dropdown.svelte';
 	import { clickOutside } from '@lib/actions/click-outside';
 	import { levelImages } from '../level.conversations';
 	import { guesses } from '../level.conversations';
@@ -23,7 +23,7 @@
 	bind:this={container}
 >
 	<GuessHitboxes />
-	<DropdownGuess {container} guesses={$guesses} bind:visible={isDropdownVisible} />
+	<Dropdown {container} guesses={$guesses} bind:visible={isDropdownVisible} />
 	<img src={levelImage} alt={`Level ${level}`} />
 </div>
 

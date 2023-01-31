@@ -76,7 +76,7 @@
 			[x, y] = calcCoordinates(e, container);
 		}}
 		use:abilityToSelect
-		class="DropdownGuess"
+		class="Dropdown"
 		data-testid="dropdown"
 		class:visible
 		style:--x={addPx(x)}
@@ -98,7 +98,7 @@
 {/if}
 
 <style>
-	.DropdownGuess {
+	.Dropdown {
 		display: none;
 		position: absolute;
 		user-select: none;
