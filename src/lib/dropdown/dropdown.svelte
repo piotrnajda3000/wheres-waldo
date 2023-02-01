@@ -30,9 +30,10 @@
 	const abilityToSelect = (node: HTMLDivElement) => {
 		let timerOpen: any;
 
-		const handleMouseDown = async () => {
+		const handleMouseDown = async (e: MouseEvent) => {
 			timerOpen = setTimeout(() => {
 				if (!visible) {
+					[x, y] = calcCoordinates(e, container);
 					visible = true;
 				}
 			}, 200);
