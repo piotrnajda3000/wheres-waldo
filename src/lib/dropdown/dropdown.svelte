@@ -4,21 +4,28 @@
 	import GuessItem from './components/guess-item.svelte';
 	import TargetingBox from './components/targeting-box.svelte';
 	import { afterUpdate } from 'svelte';
-	import { followMouseCursor } from '@lib/actions/follow-mouse-cursor';
-	import { containerClick } from '@lib/actions/container-click';
 	import { calcCoordinates } from './helpers';
+	import { updateDoc } from 'firebase/firestore';
 
 	export let container: HTMLElement;
 	export let guesses: Guess[];
-	export let visible: boolean;
 
+	let visible: boolean;
 	let x: number;
 	let y: number;
 	let targetingBoxSize = 58;
-	let guessItemWidth = 90;
+	let listWidth = 90;
 	let ref: HTMLDivElement;
-	let guessSide: 'left' | 'right';
+	let listPosition: 'left' | 'right';
 	let mouseTrack = true;
+
+	export const setVisible = (_visible: boolean) => {
+		visible = _visible;
+	};
+
+	export const getVisible = () => {
+		return visible;
+	};
 
 	const abilityToSelect = (node: HTMLDivElement) => {
 		let timerOpen: any;
@@ -29,7 +36,6 @@
 					visible = true;
 				}
 			}, 200);
-
 			mouseTrack = false;
 		};
 
@@ -49,32 +55,33 @@
 		};
 	};
 
+	export const onContainerClick = (e: MouseEvent) => {
+		[x, y] = calcCoordinates(e, container);
+		visible = !visible;
+	};
+
+	export const onContainerMouseMove = (e: MouseEvent) => {
+		if (mouseTrack) {
+			[x, y] = calcCoordinates(e, container);
+		}
+	};
+
 	afterUpdate(() => {
 		const isOutOfBounds = () => {
-			return (
-				container &&
-				ref &&
-				container.getBoundingClientRect().right - guessItemWidth < ref.getBoundingClientRect().right
-			);
+			if (!container || !ref) {
+				return false;
+			}
+			const rightEdgeDropdown = ref.getBoundingClientRect().right;
+			const rightEdgeMax = container.getBoundingClientRect().right - listWidth;
+			return rightEdgeDropdown > rightEdgeMax;
 		};
-		guessSide = isOutOfBounds() ? 'left' : 'right';
+		listPosition = isOutOfBounds() ? 'left' : 'right';
 	});
 </script>
 
 {#if guesses.length}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
-		use:containerClick={container}
-		use:followMouseCursor={{ container, destroyOn: !visible }}
-		on:mousemove_container={(e) => {
-			if (mouseTrack) {
-				[x, y] = calcCoordinates(e, container);
-			}
-		}}
-		on:click_container={(e) => {
-			visible = !visible;
-			[x, y] = calcCoordinates(e, container);
-		}}
 		use:abilityToSelect
 		class="Dropdown"
 		data-testid="dropdown"
@@ -88,10 +95,10 @@
 		<div
 			data-testid="guesses"
 			class="Guesses"
-			style:left={guessSide === 'left' ? addPx(-guessItemWidth - targetingBoxSize) : 0}
+			style:left={listPosition === 'left' ? addPx(-listWidth - targetingBoxSize) : 0}
 		>
 			{#each guesses as guess}
-				<GuessItem {guess} width={guessItemWidth} />
+				<GuessItem {guess} width={listWidth} />
 			{/each}
 		</div>
 	</div>

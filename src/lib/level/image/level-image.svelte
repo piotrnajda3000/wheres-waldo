@@ -10,20 +10,22 @@
 	const levelImage = levelImages.get(level);
 
 	let container: HTMLDivElement;
-	let isDropdownVisible = false;
+	let dropdown: Dropdown;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
 	data-testid="level-image"
 	use:clickOutside={() => {
-		isDropdownVisible = false;
+		dropdown.setVisible(false);
 	}}
 	class="LevelImage"
 	bind:this={container}
+	on:click={dropdown.onContainerClick}
+	on:mousemove={dropdown.getVisible() ? dropdown.onContainerMouseMove : undefined}
 >
 	<GuessHitboxes />
-	<Dropdown {container} guesses={$guesses} bind:visible={isDropdownVisible} />
+	<Dropdown {container} guesses={$guesses} bind:this={dropdown} />
 	<img src={levelImage} alt={`Level ${level}`} />
 </div>
 

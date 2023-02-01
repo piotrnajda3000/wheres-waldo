@@ -7,17 +7,20 @@ const mockGuesses: Guess[] = [{ name: 'test', src: 'test', x: 0, y: 0, width: 1,
 describe('Dropdown', () => {
 	describe('Not visible', () => {
 		it("Doesn't show the dropdown", () => {
-			render(Dropdown, { visible: false, guesses: mockGuesses, container: document.body });
+			const result = render(Dropdown, { guesses: mockGuesses, container: document.body });
+			result.component.setVisible(false);
 			expect(screen.queryByTestId('dropdown')).not.toHaveClass('visible');
 		});
 	});
 	describe('Visible', () => {
 		it("Given no items to guess, doesn't render the dropdown", () => {
-			render(Dropdown, { visible: true, guesses: [], container: document.body });
+			const result = render(Dropdown, { guesses: [], container: document.body });
+			result.component.setVisible(true);
 			expect(screen.queryByTestId('dropdown')).not.toBeInTheDocument();
 		});
 		it('Given items to guess, it renders dropdown elements', () => {
-			render(Dropdown, { visible: true, guesses: mockGuesses, container: document.body });
+			const result = render(Dropdown, { guesses: mockGuesses, container: document.body });
+			result.component.setVisible(true);
 			expect(screen.getByTestId('targeting-box')).toBeInTheDocument();
 			expect(screen.getByTestId('dropdown')).toBeInTheDocument();
 			mockGuesses.forEach((guess) => {

@@ -1,6 +1,6 @@
-export const calcCoordinates = (e: CustomEvent, container: HTMLElement) => {
+export const calcCoordinates = (e: MouseEvent, container: HTMLElement) => {
 	return [
-		e.detail.clientX + window.scrollX - container.offsetLeft,
-		e.detail.clientY + window.scrollY - container.offsetTop
+		e.clientX + window.scrollX - container.offsetLeft,
+		e.clientY + window.scrollY - container.offsetTop
 	];
 };
