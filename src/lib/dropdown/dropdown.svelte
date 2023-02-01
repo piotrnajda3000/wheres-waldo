@@ -1,22 +1,24 @@
 <script lang="ts">
 	import { addPx } from '@lib/helpers/add-px';
-	import type { Guess } from '@lib/level/level.conversations';
+	import { guesses, type Guess } from '@lib/level/level.conversations';
 	import GuessItem from './components/guess-item.svelte';
 	import TargetingBox from './components/targeting-box.svelte';
 	import { afterUpdate } from 'svelte';
-	import { calcCoordinates } from './helpers';
-	import { updateDoc } from 'firebase/firestore';
+	import { calcCoordinates, getGuessRect, getTargetingBoxRect } from './helpers';
+	import { overlap } from '@lib/helpers/overlap';
 
 	export let container: HTMLElement;
-	export let guesses: Guess[];
+	export let guesses$: Guess[];
 
 	let visible: boolean;
 	let x: number;
 	let y: number;
 	let targetingBoxSize = 58;
-	let listWidth = 90;
+	let listWidth = 100;
+	let listRef: HTMLDivElement;
 	let ref: HTMLDivElement;
-	let listPosition: 'left' | 'right';
+	let listPositionX: 'left' | 'right';
+	let listPositionY: 'top' | 'bottom';
 	let mouseTrack = true;
 
 	export const setVisible = (_visible: boolean) => {
@@ -45,8 +47,10 @@
 			clearTimeout(timerOpen);
 		};
 
-		container.addEventListener('mousedown', handleMouseDown);
-		container.addEventListener('mouseup', handleMouseUp);
+		if (container) {
+			container.addEventListener('mousedown', handleMouseDown);
+			container.addEventListener('mouseup', handleMouseUp);
+		}
 
 		return {
 			destroy() {
@@ -68,19 +72,28 @@
 	};
 
 	afterUpdate(() => {
-		const isOutOfBounds = () => {
-			if (!container || !ref) {
-				return false;
-			}
+		if (container && ref && listRef) {
+			const bottomEdgeMax =
+				container.getBoundingClientRect().bottom - ref.getBoundingClientRect().height;
+			const bottomEdgeList = ref.getBoundingClientRect().bottom + listRef.clientHeight;
+			listPositionY = bottomEdgeList > bottomEdgeMax ? 'top' : 'bottom';
+
 			const rightEdgeDropdown = ref.getBoundingClientRect().right;
 			const rightEdgeMax = container.getBoundingClientRect().right - listWidth;
-			return rightEdgeDropdown > rightEdgeMax;
-		};
-		listPosition = isOutOfBounds() ? 'left' : 'right';
+			listPositionX = rightEdgeDropdown > rightEdgeMax ? 'left' : 'right';
+		}
 	});
+
+	const selectGuess = (e: CustomEvent<{ guess: Guess }>) => {
+		if (
+			overlap(getTargetingBoxRect(ref, targetingBoxSize), getGuessRect(e.detail.guess, container))
+		) {
+			guesses.selectGuess(e.detail.guess);
+		}
+	};
 </script>
 
-{#if guesses.length}
+{#if guesses$.length}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		use:abilityToSelect
@@ -96,10 +109,12 @@
 		<div
 			data-testid="guesses"
 			class="Guesses"
-			style:left={listPosition === 'left' ? addPx(-listWidth - targetingBoxSize) : 0}
+			style:left={listPositionX === 'left' ? addPx(-listWidth - targetingBoxSize) : 0}
+			style:top={listPositionY === 'top' ? addPx(-listRef.clientHeight + targetingBoxSize) : 0}
+			bind:this={listRef}
 		>
-			{#each guesses as guess}
-				<GuessItem {guess} width={listWidth} />
+			{#each guesses$ as guess}
+				<GuessItem {guess} width={listWidth} on:selectGuess={selectGuess} />
 			{/each}
 		</div>
 	</div>

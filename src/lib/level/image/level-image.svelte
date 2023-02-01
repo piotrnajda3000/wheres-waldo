@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Dropdown from '@lib/dropdown/dropdown.svelte';
 	import { clickOutside } from '@lib/actions/click-outside';
-	import { levelImages } from '../level.conversations';
-	import { guesses } from '../level.conversations';
+	import { levelImages, notGuessedYet } from '../level.conversations';
 	import GuessHitboxes from '@lib/debug/guess-hitboxes.svelte';
 
 	export let level: number = 1;
@@ -24,8 +23,8 @@
 	on:click={dropdown.onContainerClick}
 	on:mousemove={dropdown.getVisible() ? dropdown.onContainerMouseMove : undefined}
 >
-	<GuessHitboxes />
-	<Dropdown {container} guesses={$guesses} bind:this={dropdown} />
+	<!-- <GuessHitboxes /> -->
+	<Dropdown {container} guesses$={$notGuessedYet} bind:this={dropdown} />
 	<img src={levelImage} alt={`Level ${level}`} />
 </div>
 
@@ -33,5 +32,6 @@
 	.LevelImage {
 		position: relative;
 		clip-path: inset(0);
+		overflow: hidden;
 	}
 </style>
